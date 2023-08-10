@@ -1,55 +1,52 @@
-let getComputerChoice = () => {
-  const decision = ["rock", "paper", "scissors"];
-  const random = Math.floor(Math.random() * decision.length);
-  // Validación -> console.log(decision[random]);
-  return decision[random];
-};
+function getComputerChoice() {
+  const choices = ['piedra', 'papel', 'tijera'];
+  const randomIndex = Math.floor(Math.random() * 3);
+  return choices[randomIndex];
+}
 
 function playRound(playerSelection, computerSelection) {
-  let player = playerSelection.toLowerCase();
-  switch (player) {
-    case "rock":
-      switch (computerSelection) {
-        case "paper":
-          return "Paper beats rock, computer win";
-          break;
-        case "scissors":
-          return "Rock beats scissors, player win";
-          break;
-        default:
-          return "It's a tie!";
-      }
-      break;
-    case "paper":
-      switch (computerSelection) {
-        case "rock":
-          return "Paper beats rock, player win";
-          break;
-        case "scissors":
-          return "Scissors beats paper, computer win";
-          break;
-        default:
-          return "It's a tie!";
-      }
-      break;
-    case "scissors":
-      switch (computerSelection) {
-        case "paper":
-          return "Scissors beats paper, player win";
-          break;
-        case "rock":
-          return "Rock beats scissors, computer win";
-          break;
-        default:
-          return "It's a tie!";
-      }
-      break;
-    default:
-      return "The name is incorrect, try again";
-      break;
+  playerSelection = playerSelection.toLowerCase();
+  
+  if (playerSelection !== 'piedra' && playerSelection !== 'papel' && playerSelection !== 'tijera') {
+      return "Error: Ingresa 'piedra', 'papel' o 'tijera'";
+  }
+
+  if (playerSelection === computerSelection) {
+      return "Empate";
+  } else if (
+      (playerSelection === 'piedra' && computerSelection === 'tijera') ||
+      (playerSelection === 'papel' && computerSelection === 'piedra') ||
+      (playerSelection === 'tijera' && computerSelection === 'papel')
+  ) {
+      return "Ganaste";
+  } else {
+      return "Perdiste";
   }
 }
 
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
+function game(totalRounds) {
+  let playerScore = 0;
+  let computerScore = 0;
+
+  for (let round = 1; round <= totalRounds; round++) {
+      const playerSelection = prompt(`Ronda ${round}: Ingresa 'piedra', 'papel' o 'tijera'`).trim();
+      const computerSelection = getComputerChoice();
+
+      const result = playRound(playerSelection, computerSelection);
+      console.log(`Ronda ${round}: ${result}`);
+
+      if (result === "Ganaste") {
+          playerScore++;
+      } else if (result === "Perdiste") {
+          computerScore++;
+      }
+  }
+
+  if (playerScore > computerScore) {
+      console.log(`Ganaste el juego con ${playerScore} victorias.`);
+  } else if (computerScore > playerScore) {
+      console.log(`Perdiste el juego. La computadora ganó con ${computerScore} victorias.`);
+  } else {
+      console.log(`El juego terminó en empate.`);
+  }
+}
